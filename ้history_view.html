@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Order History Preview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #AA98A9; --bg: #F9F7F9; --border: #E5DDE5; }
+        body { font-family: 'Inter', 'Sarabun', sans-serif; background-color: var(--bg); margin: 0; padding: 40px 20px; }
+        .history-container { background: white; max-width: 900px; margin: auto; border-radius: 24px; padding: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.03); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid var(--bg); padding-bottom: 15px; }
+        .header h2 { color: var(--primary); margin: 0; }
+        
+        .history-table { width: 100%; border-collapse: collapse; }
+        .history-table th { text-align: left; padding: 15px; color: var(--primary); font-size: 13px; border-bottom: 2px solid var(--bg); }
+        .history-table td { padding: 15px; border-bottom: 1px solid #F9F7F9; font-size: 14px; }
+        
+        .action-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: white; cursor: pointer; color: #777; transition: 0.3s; font-size: 12px; margin-left: 5px;}
+        .action-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-delete { color: #e74c3c; border-color: #fadbd8; }
+        
+        .sender-tag { font-size: 12px; color: #888; display: block; }
+        .receiver-tag { font-size: 13px; color: #4A444A; font-weight: 500; display: block; }
+    </style>
+</head>
+<body>
+
+<div class="history-container">
+    <div class="header">
+        <h2>Order History</h2>
+        <div style="font-size: 13px; color: #999;">รายการทั้งหมด: 3 รายการ</div>
+    </div>
+
+    <table class="history-table">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Date</th>
+                <th>Sender / Receiver</th>
+                <th>Total Amount</th>
+                <th style="text-align: right;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>53656</b></td>
+                <td>19 Dec 2025</td>
+                <td>
+                    <span class="sender-tag">จาก: บจก. ลองดูดี</span>
+                    <span class="receiver-tag">ถึง: บจก. กาแฟดีดี</span>
+                </td>
+                <td style="color:var(--primary); font-weight:600;">฿4,500.00</td>
+                <td style="text-align: right;">
+                    <button class="action-btn">View</button>
+                    <button class="action-btn btn-delete">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td><b>53655</b></td>
+                <td>19 Dec 2025</td>
+                <td>
+                    <span class="sender-tag">จาก: ร้านละมุนหอม</span>
+                    <span class="receiver-tag">ถึง: คุณวิภาวรรณ</span>
+                </td>
+                <td style="color:var(--primary); font-weight:600;">฿900.00</td>
+                <td style="text-align: right;">
+                    <button class="action-btn">View</button>
+                    <button class="action-btn btn-delete">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td><b>53654</b></td>
+                <td>18 Dec 2025</td>
+                <td>
+                    <span class="sender-tag">จาก: บจก. ลองดูดี</span>
+                    <span class="receiver-tag">ถึง: คุณพรทิพย์ (นครสวรรค์)</span>
+                </td>
+                <td style="color:var(--primary); font-weight:600;">฿1,250.00</td>
+                <td style="text-align: right;">
+                    <button class="action-btn">View</button>
+                    <button class="action-btn btn-delete">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <a href="order.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">+ สร้างรายการใหม่</a>
+    </div>
+</div>
+
+</body>
+</html>

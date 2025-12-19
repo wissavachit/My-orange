@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ใบเสร็จรับเงิน - Order Summary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --primary: #AA98A9; 
+            --bg: #F5F3F5; 
+            --text-dark: #3A353A;
+            --border: #D1C7D1;
+        }
+        
+        body { 
+            font-family: 'Sarabun', 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            margin: 0; 
+            padding: 40px 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* กล่องใบเสร็จ */
+        .invoice-paper {
+            background: white;
+            width: 100%;
+            max-width: 700px;
+            padding: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-radius: 4px; /* มุมเหลี่ยมเล็กน้อยให้ฟีลกระดาษ */
+            position: relative;
+        }
+
+        /* หัวเอกสาร */
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .company-info h1 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .document-type {
+            text-align: right;
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            height: fit-content;
+            font-weight: 600;
+            border-radius: 4px;
+        }
+
+        /* รายละเอียดผู้เกี่ยวข้อง */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #eee;
+            display: block;
+        }
+
+        .info-value {
+            font-size: 15px;
+            color: var(--text-dark);
+            margin: 0;
+            padding-top: 2px;
+        }
+
+        /* ตารางรายการสินค้า */
+        .item-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .item-table th {
+            background: #FDFBFE;
+            color: var(--primary);
+            text-align: left;
+            padding: 12px 10px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .item-table td {
+            padding: 15px 10px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        /* สรุปยอด */
+        .footer-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .signature-area {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .signature-line {
+            width: 150px;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 8px;
+        }
+
+        .total-box {
+            text-align: right;
+        }
+
+        .total-box p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .total-box .grand-total {
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 10px;
+        }
+
+        /* ปุ่มกด */
+        .no-print {
+            margin-top: 40px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-outline { background: white; border: 1px solid var(--primary); color: var(--primary); }
+
+        @media print {
+            .no-print { display: none; }
+            body { background: white; padding: 0; }
+            .invoice-paper { box-shadow: none; border: none; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="invoice-paper">
+    <div class="header-section">
+        <div class="company-info">
+            <h1>ORDER RECEIPT</h1>
+            <p style="font-size: 12px; color: #888; margin: 5px 0;">Official transaction record</p>
+        </div>
+        <div class="document-type" id="docType">สำเนาใบส่งสินค้า</div>
+    </div>
+
+    <div class="details-grid" id="detailsGrid">
+        </div>
+
+    <table class="item-table">
+        <thead>
+            <tr>
+                <th>รายการ (DESCRIPTION)</th>
+                <th style="text-align: center;">จำนวน (QTY)</th>
+                <th style="text-align: right;">รวมเงิน (AMOUNT)</th>
+            </tr>
+        </thead>
+        <tbody id="itemsBody">
+            </tbody>
+    </table>
+
+    <div class="footer-section">
+        <div class="signature-area">
+            <div class="signature-line"></div>
+            <p>ผู้รับสินค้า / Receiver</p>
+        </div>
+        
+        <div class="total-box">
+            <p>ราคารวมสุทธิ (Subtotal)</p>
+            <div class="grand-total">฿<span id="displayTotal">0.00</span></div>
+        </div>
+    </div>
+
+    <div class="no-print">
+        <a href="order.html" class="btn btn-outline">← แก้ไขข้อมูล</a>
+        <button class="btn btn-primary" onclick="window.print()">พิมพ์เอกสาร (Print)</button>
+    </div>
+</div>
+
+<script>
+    const data = JSON.parse(localStorage.getItem('lastOrder'));
+    const mockData = {
+        orderNo: "53654",
+        date: "2025-12-19",
+        sender: "บริษัท ละมุนหอม จำกัด",
+        receiver: "คุณพรทิพย์ ใจดี (นครสวรรค์)",
+        grandTotal: "1,250.00",
+        items: [
+            { name: "น้ำมะนาวคั้นสด 100%", qty: "5", total: "1,000.00" },
+            { name: "บรรจุภัณฑ์รักษ์โลก", qty: "1", total: "250.00" }
+        ]
+    };
+
+    const finalData = data || mockData;
+    document.getElementById('detailsGrid').innerHTML = `
+        <div class="info-item">
+            <span class="info-label">เลขที่ใบสั่งซื้อ (Order No.)</span>
+            <p class="info-value">${finalData.orderNo}</p>
+        </div>
+        <div class="info-item">
+            <span class="info-label">วันที่ (Date)</span>
+            <p class="info-value">${finalData.date}</p>
+        </div>
+        <div class="info-item">
+            <span class="info-label">ผู้ส่ง (Sender)</span>
+            <p class="info-value">${finalData.sender}</p>
+        </div>
+        <div class="info-item">
+            <span class="info-label">ผู้รับ (Receiver)</span>
+            <p class="info-value">${finalData.receiver}</p>
+        </div>
+    `;
+    const itemsBody = document.getElementById('itemsBody');
+    finalData.items.forEach(item => {
+        const row = `
+            <tr>
+                <td>${item.name}</td>
+                <td style="text-align: center;">${item.qty || 1}</td>
+                <td style="text-align: right;">${item.total}</td>
+            </tr>
+        `;
+        itemsBody.innerHTML += row;
+    });
+
+    document.getElementById('displayTotal').innerText = finalData.grandTotal;
+</script>
+
+</body>
+</html>
